@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://b5uuow2uctase"]
+
+[ext_resource type="Texture2D" uid="uid://d4dew0n264ue6" path="res://assets/Items/Boxes/Box1/Idle.png" id="1_o5qli"]
+[ext_resource type="Texture2D" uid="uid://b6dqucujrswra" path="res://assets/Main Characters/player.png" id="2_0wfyh"]
+[ext_resource type="Script" uid="uid://bw0i56g7mpevy" path="res://scenes/player.gd" id="2_sugp2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sugp2"]
+size = Vector2(13.111599, 13.992798)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0wfyh"]
+radius = 9.57634
+height = 26.0
+
+[node name="main" type="Node2D" unique_id=307151052]
+
+[node name="platform" type="Node2D" parent="." unique_id=2105449058]
+position = Vector2(582, 583.99994)
+scale = Vector2(46.142357, 0.5004041)
+
+[node name="Sprite2D" type="Sprite2D" parent="platform" unique_id=2087292238]
+position = Vector2(-2.7583919, -34.807266)
+scale = Vector2(0.65533, 0.84945464)
+texture = ExtResource("1_o5qli")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="platform" unique_id=1517602822]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="platform/StaticBody2D" unique_id=380049346]
+position = Vector2(-2.7631874, -34.97351)
+scale = Vector2(1, 1.0000004)
+shape = SubResource("RectangleShape2D_sugp2")
+
+[node name="player" type="CharacterBody2D" parent="." unique_id=805277264]
+position = Vector2(198.00002, 355)
+scale = Vector2(1.0442398, 1)
+script = ExtResource("2_sugp2")
+
+[node name="skin" type="Sprite2D" parent="player" unique_id=246694225]
+position = Vector2(22.983213, 7)
+texture = ExtResource("2_0wfyh")
+
+[node name="body" type="CollisionShape2D" parent="player" unique_id=1946531482]
+position = Vector2(22.983229, 10)
+shape = SubResource("CapsuleShape2D_0wfyh")
