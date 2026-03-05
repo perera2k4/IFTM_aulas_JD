@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://njglvr2t3wpr"]
+
+[ext_resource type="Texture2D" uid="uid://dn863g5db47gg" path="res://assets/Enemies/Ghost/Idle (44x30).png" id="1_t76o2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q8f8o"]
+atlas = ExtResource("1_t76o2")
+region = Rect2(0, 0, 44, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ctd3l"]
+atlas = ExtResource("1_t76o2")
+region = Rect2(44, 0, 44, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pab6s"]
+atlas = ExtResource("1_t76o2")
+region = Rect2(88, 0, 44, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ef87u"]
+atlas = ExtResource("1_t76o2")
+region = Rect2(132, 0, 44, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nopqe"]
+atlas = ExtResource("1_t76o2")
+region = Rect2(176, 0, 44, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ewpyp"]
+atlas = ExtResource("1_t76o2")
+region = Rect2(220, 0, 44, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l3ou5"]
+atlas = ExtResource("1_t76o2")
+region = Rect2(264, 0, 44, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dybmp"]
+atlas = ExtResource("1_t76o2")
+region = Rect2(308, 0, 44, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ytvb"]
+atlas = ExtResource("1_t76o2")
+region = Rect2(352, 0, 44, 30)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vn3yp"]
+atlas = ExtResource("1_t76o2")
+region = Rect2(396, 0, 44, 30)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4g47c"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q8f8o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ctd3l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pab6s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ef87u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nopqe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ewpyp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l3ou5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dybmp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1ytvb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vn3yp")
+}],
+"loop": true,
+"name": &"ghost",
+"speed": 16.0
+}]
+
+[node name="ghost" type="AnimatedSprite2D" unique_id=1739657220]
+sprite_frames = SubResource("SpriteFrames_4g47c")
+animation = &"ghost"
+frame_progress = 0.9290052
