@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://266ktok0smde"]
+
+[ext_resource type="PackedScene" uid="uid://bej6rr6u4phm2" path="res://scenes/inimigo.tscn" id="1_030df"]
+
+[node name="Node2D" type="Node2D" unique_id=1239530732]
+
+[node name="CharacterBody2D" parent="." unique_id=775868350 instance=ExtResource("1_030df")]
