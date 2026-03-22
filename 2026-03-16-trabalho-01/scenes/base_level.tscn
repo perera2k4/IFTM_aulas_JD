@@ -1,0 +1,89 @@
+[gd_scene format=4 uid="uid://bu2jfocum8wbh"]
+
+[ext_resource type="TileSet" uid="uid://5ryxlktca2at" path="res://resources/level_tileSet.tres" id="2_earhg"]
+[ext_resource type="PackedScene" uid="uid://k2ylmvmlir0g" path="res://scenes/player.tscn" id="3_u6ue0"]
+[ext_resource type="PackedScene" uid="uid://cx77jh4yvr44q" path="res://scenes/hud.tscn" id="6_3rj88"]
+
+[sub_resource type="GDScript" id="GDScript_0pxoi"]
+script/source = "extends Node2D
+
+@onready var hud: CanvasLayer = $HUD
+@onready var player: CharacterBody2D = $Player
+@onready var mark_die: Marker2D = $MarkDie
+
+var start_position
+
+func _ready() -> void :
+	start_position = player.global_position
+	
+	# Conectando com o sinal - fruit_collected
+	var all_fruits = get_tree().get_nodes_in_group(\"g_fruits\")
+	for fruit in all_fruits:
+		fruit.fruit_collected.connect(_on_fruit_collected)
+	
+	# Conectando com o sinal - damaged
+	var all_damages = get_tree().get_nodes_in_group(\"g_damages\")
+	for damage in all_damages:
+		damage.damaged.connect(_on_damaged)
+	
+	# Conectando com o sinal - checkpoint_is_picked
+	var all_checkpoints = get_tree().get_nodes_in_group(\"g_checkpoint\")
+	for cp in all_checkpoints:
+		cp.checkpoint_is_picked.connect(_on_checkpoint_picked)
+	
+func _process(delta: float) -> void:
+	# Verifica se caiu do mapa
+	if player.global_position.y > mark_die.global_position.y:
+		_on_damaged()
+		
+# Detecta colisão com o checkpoint
+func _on_checkpoint_picked():
+	hud.update_checkpoint_status()
+	GlobalIterates.has_checkpoint = true
+	await get_tree().create_timer(2).timeout
+	player.global_position.y = -375
+	player.global_position.x = 2250
+
+# Detecta colisão e soma +1 fruta no hud
+func _on_fruit_collected():
+	hud.eat_fruit()
+
+# Detecta dano/morte do player
+func _on_damaged():
+	hud.death_count()
+	
+	# Verifica na variável global se ele pegou o checkpoint
+	if GlobalIterates.has_checkpoint:
+		get_tree().change_scene_to_file(\"res://scenes/levels/level_2.tscn\")
+	else:
+		get_tree().change_scene_to_file(\"res://scenes/levels/level_1.tscn\")
+"
+
+[node name="base_level" type="Node2D" unique_id=47206696]
+position = Vector2(41, 39)
+script = SubResource("GDScript_0pxoi")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1858484004]
+offset_left = -968.0
+offset_top = -465.0
+offset_right = 2068.0
+offset_bottom = 1045.0
+color = Color(0.46600688, 0.7299959, 0.7610338, 1)
+
+[node name="HUD" parent="." unique_id=182958909 instance=ExtResource("6_3rj88")]
+
+[node name="Player" parent="." unique_id=788024931 groups=["player"] instance=ExtResource("3_u6ue0")]
+position = Vector2(50, 227)
+
+[node name="MarkDie" type="Marker2D" parent="." unique_id=662225051]
+position = Vector2(-44, 451)
+
+[node name="Map" type="Node2D" parent="." unique_id=1024618199]
+
+[node name="Ground" type="TileMapLayer" parent="Map" unique_id=1411226479]
+tile_map_data = PackedByteArray("AAAAABEAAAAGAAAAAAABABEAAAAHAAAAAAACABEAAAAHAAAAAAADABEAAAAHAAAAAAAEABEAAAAHAAAAAAAFABEAAAAHAAAAAAAGABEAAAAHAAAAAAAHABEAAAAHAAAAAAAIABEAAAAHAAAAAAAJABEAAAAHAAAAAAAKABEAAAAHAAAAAAALABEAAAAHAAAAAAAMABEAAAAIAAAAAAAAABIAAAAGAAEAAAABABIAAAAHAAEAAAACABIAAAAHAAEAAAADABIAAAAHAAEAAAAEABIAAAAHAAEAAAAFABIAAAAHAAEAAAAGABIAAAAHAAEAAAAHABIAAAAHAAEAAAAIABIAAAAHAAEAAAAJABIAAAAHAAEAAAAKABIAAAAHAAEAAAALABIAAAAHAAEAAAAMABIAAAAIAAEAAAAAABMAAAAGAAEAAAAAABQAAAAGAAEAAAAAABUAAAAGAAEAAAAAABYAAAAGAAIAAAABABYAAAAHAAIAAAACABYAAAAHAAIAAAADABYAAAAHAAIAAAAEABYAAAAHAAIAAAAFABYAAAAHAAIAAAAGABYAAAAHAAIAAAAHABYAAAAHAAIAAAAIABYAAAAHAAIAAAAJABYAAAAHAAIAAAAKABYAAAAHAAIAAAALABYAAAAHAAIAAAABABMAAAAHAAEAAAACABMAAAAHAAEAAAADABMAAAAHAAEAAAAEABMAAAAHAAEAAAAFABMAAAAHAAEAAAAGABMAAAAHAAEAAAAHABMAAAAHAAEAAAAIABMAAAAHAAEAAAAJABMAAAAHAAEAAAAKABMAAAAHAAEAAAALABMAAAAHAAEAAAALABQAAAAHAAEAAAAKABQAAAAHAAEAAAAJABQAAAAHAAEAAAAIABQAAAAHAAEAAAAHABQAAAAHAAEAAAAGABQAAAAHAAEAAAAFABQAAAAHAAEAAAAEABQAAAAHAAEAAAADABQAAAAHAAEAAAACABQAAAAHAAEAAAABABQAAAAHAAEAAAABABUAAAAHAAEAAAACABUAAAAHAAEAAAADABUAAAAHAAEAAAAEABUAAAAHAAEAAAAFABUAAAAHAAEAAAAGABUAAAAHAAEAAAAHABUAAAAHAAEAAAAIABUAAAAHAAEAAAAJABUAAAAHAAEAAAAKABUAAAAHAAEAAAALABUAAAAHAAEAAAAMABQAAAAIAAEAAAAMABMAAAAIAAEAAAAMABUAAAAIAAEAAAAMABYAAAAIAAIAAAA=")
+tile_set = ExtResource("2_earhg")
+
+[node name="Fruit" type="Node2D" parent="." unique_id=232353003]
+
+[node name="Damages" type="Node2D" parent="." unique_id=559183423]

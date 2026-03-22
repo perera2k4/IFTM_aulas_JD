@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://sk38v3lx2rkm"]
+
+[ext_resource type="Script" uid="uid://sp5hksrcgevr" path="res://scenes/fruit_random.gd" id="1_gmr6b"]
+[ext_resource type="SpriteFrames" uid="uid://cqh5b23sfcmn8" path="res://resources/bananaFrame.tres" id="2_or8p8"]
+[ext_resource type="SpriteFrames" uid="uid://n6tekr8ukl6r" path="res://resources/KiwiFrame.tres" id="2_vceu4"]
+[ext_resource type="SpriteFrames" uid="uid://2b37wfl573t2" path="res://resources/MelonFrame.tres" id="4_g1b75"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a0ai7"]
+radius = 11.0
+
+[node name="fruitRandom" type="Node2D" unique_id=507976334 groups=["g_fruits"]]
+script = ExtResource("1_gmr6b")
+types_fruit = Array[SpriteFrames]([ExtResource("2_or8p8"), ExtResource("2_vceu4"), ExtResource("4_g1b75")])
+points = null
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=35456949]
+sprite_frames = ExtResource("4_g1b75")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1945465230]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1355511878]
+shape = SubResource("CircleShape2D_a0ai7")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

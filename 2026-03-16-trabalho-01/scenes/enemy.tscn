@@ -1,0 +1,111 @@
+[gd_scene format=3 uid="uid://bej6rr6u4phm2"]
+
+[ext_resource type="Texture2D" uid="uid://bdigaowaclt5i" path="res://assets/Enemies/Bee/Idle (36x34).png" id="1_7p1mj"]
+
+[sub_resource type="GDScript" id="GDScript_pt50e"]
+script/source = "extends CharacterBody2D
+
+@onready var enemy: AnimatedSprite2D = $AnimatedSprite2D
+signal damaged
+
+# Configurações do movimento
+var time_passed: float = 0.0
+var start_position: Vector2
+@export var amplitude: float = 150.0 # Largura do voo
+@export var speed: float = 2.0 # Velocidade do voo
+
+func _ready():
+	enemy.play(\"default\")
+	start_position = global_position
+
+func _process(delta: float) -> void:
+	time_passed += delta * speed
+	
+	# Cálculo da Lemniscata (Símbolo do Infinito)
+	var new_x = amplitude * cos(time_passed)
+	var new_y = (amplitude / 2) * sin(2 * time_passed)
+	
+	# Atualiza a posição relativa ao ponto inicial
+	global_position = start_position + Vector2(new_x, new_y)
+	
+	# Opcional: Virar a abelha dependendo da direção
+	enemy.flip_h = cos(time_passed) > 0
+
+func _on_area_2d_body_entered(body):
+	if body.is_in_group(\"player\"):
+		damaged.emit()
+"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_61lki"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(0, 0, 36, 34)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_21tsg"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(36, 0, 36, 34)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4er16"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(72, 0, 36, 34)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ui621"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(108, 0, 36, 34)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_adsyq"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(144, 0, 36, 34)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jc2kt"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(180, 0, 36, 34)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1su0k"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_61lki")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_21tsg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4er16")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ui621")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_adsyq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jc2kt")
+}],
+"loop": true,
+"name": &"default",
+"speed": 13.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0b8xr"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_61lki"]
+radius = 13.0
+height = 34.0
+
+[node name="enemy" type="CharacterBody2D" unique_id=775868350 groups=["g_damages"]]
+script = SubResource("GDScript_pt50e")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=439280098]
+sprite_frames = SubResource("SpriteFrames_1su0k")
+frame_progress = 0.64986557
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1671627448]
+shape = SubResource("CapsuleShape2D_0b8xr")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=725668265]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=578230256]
+shape = SubResource("CapsuleShape2D_61lki")
+debug_color = Color(0.9864659, 0, 0.3281073, 0.41960785)
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

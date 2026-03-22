@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://dyt0u5qwkjtau"]
+
+[ext_resource type="Texture2D" uid="uid://vv6i2pknxotw" path="res://assets/Menu/Levels/50.png" id="1_6kl4h"]
+[ext_resource type="Script" uid="uid://4wksdm6xua0s" path="res://scenes/checkpoint_collision.gd" id="1_iakul"]
+[ext_resource type="FontFile" uid="uid://cch5mdt3nentw" path="res://assets/Fonts/PeaberryBase.ttf" id="2_iakul"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6kl4h"]
+size = Vector2(29, 28)
+
+[node name="directionsIndicator2" type="Node2D" unique_id=1136718623 groups=["g_checkpoint"]]
+script = ExtResource("1_iakul")
+
+[node name="Label" type="Label" parent="." unique_id=1177506383]
+offset_left = 1.0
+offset_top = -95.0
+offset_right = 279.0
+offset_bottom = -46.0
+size_flags_horizontal = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_outline_size = 0
+theme_override_fonts/font = ExtResource("2_iakul")
+theme_override_font_sizes/font_size = 22
+text = "Certamente não é
+o checkpoint!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=2119284918]
+offset_left = 121.0
+offset_top = -34.0
+offset_right = 154.0
+offset_bottom = -2.0
+texture = ExtResource("1_6kl4h")
+
+[node name="Area2D" type="Area2D" parent="TextureRect" unique_id=47029014]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TextureRect/Area2D" unique_id=600053422]
+position = Vector2(16.5, 16)
+shape = SubResource("RectangleShape2D_6kl4h")
+debug_color = Color(0.43702114, 0.5929576, 0.26770833, 0.41960785)
+
+[connection signal="area_entered" from="TextureRect/Area2D" to="." method="_on_area_2d_area_entered"]
