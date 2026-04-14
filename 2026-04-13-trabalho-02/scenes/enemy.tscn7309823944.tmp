@@ -1,0 +1,114 @@
+[gd_scene format=3 uid="uid://cxrehnx0iksif"]
+
+[ext_resource type="Texture2D" uid="uid://djvxsxxw165ag" path="res://assets/Characters 24x24/Spring 3 v1.png" id="1_7p1mj"]
+[ext_resource type="Script" uid="uid://cn4k12r15o4nn" path="res://scenes/enemy.gd" id="1_md0e3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_md0e3"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ra3w"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5uy6h"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c4w8v"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(72, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xwavj"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(96, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nenq2"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(120, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_md484"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(144, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ipns3"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(168, 0, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8qclf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_md0e3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4ra3w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5uy6h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c4w8v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xwavj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nenq2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_md484")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ipns3")
+}],
+"loop": true,
+"name": &"default",
+"speed": 17.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w8i8w"]
+radius = 5.0
+
+[sub_resource type="GDScript" id="GDScript_4ra3w"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4ra3w"]
+radius = 9.055386
+
+[node name="enemy" type="CharacterBody2D" unique_id=1206578367]
+script = ExtResource("1_md0e3")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2075008816]
+position = Vector2(0, -5)
+sprite_frames = SubResource("SpriteFrames_8qclf")
+frame_progress = 0.54064995
+
+[node name="body" type="CollisionShape2D" parent="." unique_id=1692056314]
+position = Vector2(-1, 1)
+shape = SubResource("CircleShape2D_w8i8w")
+
+[node name="area_damaged" type="Area2D" parent="." unique_id=139102319]
+position = Vector2(-1, 1)
+script = SubResource("GDScript_4ra3w")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="area_damaged" unique_id=1402374973]
+position = Vector2(0, -2)
+shape = SubResource("CircleShape2D_4ra3w")
+debug_color = Color(0.695775, 0.124331705, 0.38032144, 0.41960785)
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=624900572]
+path_desired_distance = 13.0
+target_desired_distance = 13.0
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=1090064012]
+modulate = Color(18.892157, 0, 0, 1)
+self_modulate = Color(18.892157, 0, 0, 1)
+offset_left = -12.0
+offset_top = -17.0
+offset_right = 12.0
+offset_bottom = -13.0
+value = 100.0
+show_percentage = false
+
+[connection signal="area_entered" from="area_damaged" to="." method="_on_area_damaged_area_entered"]
+[connection signal="body_entered" from="area_damaged" to="." method="_on_area_damaged_body_entered"]

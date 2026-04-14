@@ -1,0 +1,125 @@
+[gd_scene format=3 uid="uid://dijkuedd4pcwf"]
+
+[ext_resource type="Script" uid="uid://dlmiky6h32y28" path="res://scenes/player.gd" id="1_g2els"]
+[ext_resource type="PackedScene" uid="uid://bijrnyn0srdbp" path="res://scenes/bullet.tscn" id="2_dqkch"]
+[ext_resource type="Texture2D" uid="uid://bxsnjurl8k552" path="res://assets/16x16 Items v1.png" id="3_qhqgy"]
+[ext_resource type="Texture2D" uid="uid://ca34fkj6hmo78" path="res://assets/Characters 24x24/DG Knight 3 v1.png" id="3_qlg0r"]
+[ext_resource type="FontFile" uid="uid://1ixwn4g0as5a" path="res://assets/Fonts/PeaberryBase.ttf" id="5_qlg0r"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a38lo"]
+atlas = ExtResource("3_qlg0r")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ni07"]
+atlas = ExtResource("3_qlg0r")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l71n6"]
+atlas = ExtResource("3_qlg0r")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ke2ow"]
+atlas = ExtResource("3_qlg0r")
+region = Rect2(72, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ujl30"]
+atlas = ExtResource("3_qlg0r")
+region = Rect2(96, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_31cv2"]
+atlas = ExtResource("3_qlg0r")
+region = Rect2(120, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pf23h"]
+atlas = ExtResource("3_qlg0r")
+region = Rect2(144, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dt7fs"]
+atlas = ExtResource("3_qlg0r")
+region = Rect2(168, 0, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wqfne"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a38lo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4ni07")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l71n6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ke2ow")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ujl30")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_31cv2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pf23h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dt7fs")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 17.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3vyb7"]
+radius = 5.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dqkch"]
+atlas = ExtResource("3_qhqgy")
+region = Rect2(136, 72, 16, 16)
+
+[node name="player" type="CharacterBody2D" unique_id=926376576 groups=["g_player"]]
+script = ExtResource("1_g2els")
+bullet_scene = ExtResource("2_dqkch")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=983622688]
+position = Vector2(0, -6)
+sprite_frames = SubResource("SpriteFrames_wqfne")
+animation = &"idle"
+frame_progress = 0.45589966
+
+[node name="CollisionWithObjects" type="CollisionShape2D" parent="." unique_id=1569373909]
+position = Vector2(-1, 1)
+shape = SubResource("CircleShape2D_3vyb7")
+
+[node name="weapon" type="Node2D" parent="." unique_id=997956286]
+
+[node name="Sprite2D" type="Sprite2D" parent="weapon" unique_id=132538440]
+position = Vector2(8.20762, 0.0006130636)
+rotation = 0.7883525
+scale = Vector2(0.9011277, 0.9011277)
+texture = SubResource("AtlasTexture_dqkch")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1132074460]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Camera2D" unique_id=897486806]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -53.5
+offset_top = -180.0
+offset_right = 49.5
+offset_bottom = -148.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="Camera2D/HBoxContainer" unique_id=290857960]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = 2
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("5_qlg0r")
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 3
+vertical_alignment = 2
