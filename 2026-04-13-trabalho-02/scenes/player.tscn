@@ -100,6 +100,7 @@ scale = Vector2(0.9011277, 0.9011277)
 texture = SubResource("AtlasTexture_dqkch")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1132074460]
+limit_smoothed = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Camera2D" unique_id=897486806]
 anchors_preset = 14
