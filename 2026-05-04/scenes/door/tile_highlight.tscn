@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dv4jjri64vu87"]
+
+[ext_resource type="Script" uid="uid://c6absvkegdv5" path="res://tile_highlight.gd" id="1_rttlp"]
+
+[node name="TileHighlight" type="Node2D" unique_id=1648206783]
+script = ExtResource("1_rttlp")

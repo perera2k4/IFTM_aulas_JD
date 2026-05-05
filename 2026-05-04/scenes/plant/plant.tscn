@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://leq2cvpva5b8"]
+
+[ext_resource type="Script" uid="uid://bg757rrelnma5" path="res://scenes/plant/plant.gd" id="1_gm68k"]
+[ext_resource type="Texture2D" uid="uid://bc3t5p11fvklv" path="res://assets/Objects/Farming Plants.png" id="2_85esa"]
+
+[node name="Plant" type="Node2D" unique_id=52755335]
+script = ExtResource("1_gm68k")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=194117494]
+texture = ExtResource("2_85esa")
+hframes = 5
+vframes = 15
+frame = 45
+
+[node name="Timer" type="Timer" parent="." unique_id=1670205813]
+wait_time = 5.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
