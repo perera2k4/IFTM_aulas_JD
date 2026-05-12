@@ -1,0 +1,122 @@
+[gd_scene format=3 uid="uid://cba3wum1kyh0v"]
+
+[ext_resource type="Texture2D" uid="uid://brlpfbyaqu8vb" path="res://assets/Tilesets/UI Elements Tileset.png" id="1_48c2t"]
+[ext_resource type="Script" uid="uid://7hueblfqf56j" path="res://scenes/hud/hud.gd" id="1_c45xl"]
+[ext_resource type="Texture2D" uid="uid://dex0wvpvjetls" path="res://assets/Objects/Items/items-spritesheet.png" id="2_cgeww"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cgeww"]
+texture = ExtResource("1_48c2t")
+texture_margin_left = 12.0
+texture_margin_top = 12.0
+texture_margin_right = 12.0
+texture_margin_bottom = 12.0
+region_rect = Rect2(292, 52, 40, 40)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_c45xl"]
+texture = ExtResource("1_48c2t")
+texture_margin_left = 6.0
+texture_margin_top = 4.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+region_rect = Rect2(836, 4, 24, 24)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0bx4p"]
+texture = ExtResource("1_48c2t")
+texture_margin_left = 6.0
+texture_margin_top = 4.0
+texture_margin_right = 6.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(868, 6, 24, 22)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mgtrf"]
+texture = ExtResource("1_48c2t")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 6.0
+region_rect = Rect2(710, 37, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mgtrf"]
+atlas = ExtResource("2_cgeww")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c45xl"]
+atlas = ExtResource("2_cgeww")
+region = Rect2(33, 0, 15, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0bx4p"]
+atlas = ExtResource("2_cgeww")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v7mo4"]
+atlas = ExtResource("2_cgeww")
+region = Rect2(0, 144, 16, 16)
+
+[node name="HUD" type="CanvasLayer" unique_id=938372672]
+script = ExtResource("1_c45xl")
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=805483961]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -46.0
+offset_top = -58.0
+offset_right = 46.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxTexture_cgeww")
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel" unique_id=1166506072]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer" unique_id=848052169]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+
+[node name="Btn_Axe" type="Button" parent="Panel/MarginContainer/HBoxContainer" unique_id=1661654158]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_c45xl")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_0bx4p")
+theme_override_styles/hover = SubResource("StyleBoxTexture_mgtrf")
+icon = SubResource("AtlasTexture_mgtrf")
+
+[node name="Btn_Hoe" type="Button" parent="Panel/MarginContainer/HBoxContainer" unique_id=801732231]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_c45xl")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_0bx4p")
+theme_override_styles/hover = SubResource("StyleBoxTexture_mgtrf")
+icon = SubResource("AtlasTexture_c45xl")
+
+[node name="Btn_Wathering" type="Button" parent="Panel/MarginContainer/HBoxContainer" unique_id=321267672]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_c45xl")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_0bx4p")
+theme_override_styles/hover = SubResource("StyleBoxTexture_mgtrf")
+icon = SubResource("AtlasTexture_0bx4p")
+
+[node name="Btn_PumpkinSeed" type="Button" parent="Panel/MarginContainer/HBoxContainer" unique_id=807838698]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_c45xl")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_0bx4p")
+theme_override_styles/hover = SubResource("StyleBoxTexture_mgtrf")
+icon = SubResource("AtlasTexture_v7mo4")
+
+[connection signal="pressed" from="Panel/MarginContainer/HBoxContainer/Btn_Axe" to="." method="_on_btn_axe_pressed"]
+[connection signal="pressed" from="Panel/MarginContainer/HBoxContainer/Btn_Hoe" to="." method="_on_btn_axe_pressed"]
+[connection signal="pressed" from="Panel/MarginContainer/HBoxContainer/Btn_Wathering" to="." method="_on_btn_axe_pressed"]
+[connection signal="pressed" from="Panel/MarginContainer/HBoxContainer/Btn_PumpkinSeed" to="." method="_on_btn_axe_pressed"]
