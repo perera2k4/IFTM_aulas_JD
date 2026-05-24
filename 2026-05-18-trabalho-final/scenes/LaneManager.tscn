@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://xl53wxasj6wi"]
+
+[ext_resource type="Script" uid="uid://778y3u3x1se0" path="res://scripts/lane_manager.gd" id="1"]
+
+[node name="LaneManager" type="Node2D" unique_id=834569209]
+script = ExtResource("1")
