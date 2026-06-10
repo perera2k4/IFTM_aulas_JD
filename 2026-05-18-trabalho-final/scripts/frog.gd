@@ -10,6 +10,7 @@ var _is_moving := false
 var _target_pos := Vector2.ZERO
 var _min_x := -400.0
 var _max_x := 400.0
+var _min_y := 0
 
 func _ready() -> void:
 	animated_sprite_2d.play("idle")
@@ -21,6 +22,9 @@ func set_bounds(min_x: float, max_x: float) -> void:
 	_min_x = min_x
 	_max_x = max_x
 
+func set_min_y(min_y: float) -> void:
+	_min_y = min_y
+
 func _unhandled_input(_event: InputEvent) -> void:
 	if _is_moving:
 		return
@@ -29,6 +33,8 @@ func _unhandled_input(_event: InputEvent) -> void:
 		animated_sprite_2d.play("up")
 		move = Vector2(0, -lane_height)
 	elif Input.is_action_just_pressed("ui_down"):
+		if global_position.y >= _min_y:
+			return
 		animated_sprite_2d.play("down")
 		move = Vector2(0, lane_height)
 	elif Input.is_action_just_pressed("ui_left"):
@@ -41,8 +47,10 @@ func _unhandled_input(_event: InputEvent) -> void:
 	if move == Vector2.ZERO:
 		return
 
-	_target_pos = global_position + move
-	_target_pos.x = clamp(_target_pos.x, _min_x, _max_x)
+	var raw: Vector2 = global_position + move
+	var clamped_x: float = clampf(raw.x, _min_x, _max_x)
+	var clamped_y: float = clampf(raw.y, -1e9, _min_y)
+	_target_pos = Vector2(clamped_x, clamped_y)
 	_is_moving = true
 	var tween := create_tween()
 	tween.tween_property(self, "global_position", _target_pos, move_duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
@@ -51,6 +59,9 @@ func _unhandled_input(_event: InputEvent) -> void:
 func _on_move_finished() -> void:
 	_is_moving = false
 	animated_sprite_2d.play("idle")
+
+func is_moving() -> bool:
+	return _is_moving
 
 func _update_bounds_from_viewport() -> void:
 	var half_width := get_viewport_rect().size.x * 0.5

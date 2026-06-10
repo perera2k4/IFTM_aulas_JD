@@ -11,9 +11,15 @@ config_version=5
 [application]
 
 config/name="2026-05-18-trabalho-final"
-run/main_scene="res://scenes/Main.tscn"
+config/description="Trabalho final"
+run/main_scene="res://scenes/Menu.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/mode=3
+window/stretch/mode="canvas_items"
 
 [physics]
 

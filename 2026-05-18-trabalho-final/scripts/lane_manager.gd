@@ -10,7 +10,8 @@ signal player_hit
 
 const LANE_GRASS := 0
 const LANE_ROAD := 1
-const MAX_ROAD_STREAK := 3
+const LANE_WATER := 2
+const MAX_ROAD_STREAK := 4
 
 var _lane_scene := preload("res://scenes/Lane.tscn")
 var _lanes: Dictionary = {}
@@ -47,14 +48,15 @@ func _current_row() -> int:
 func _ensure_lanes(center_row: int) -> void:
 	_update_world_width()
 	var min_row := center_row - lanes_behind
+	var min_row_clamped: int = maxi(min_row, 0)
 	var max_row := center_row + lanes_ahead
-	for row in range(min_row, max_row + 1):
+	for row in range(min_row_clamped, max_row + 1):
 		if not _lanes.has(row):
 			_create_lane(row)
 
 	var to_remove: Array = []
 	for row in _lanes.keys():
-		if row < min_row - 2 or row > max_row + 2:
+		if row < min_row_clamped - 2 or row > max_row + 2:
 			to_remove.append(row)
 	for row in to_remove:
 		_lanes[row].queue_free()
@@ -63,7 +65,7 @@ func _ensure_lanes(center_row: int) -> void:
 func _create_lane(row: int) -> void:
 	var lane_type := _get_lane_type(row)
 	var lane: Node2D = _lane_scene.instantiate()
-	lane.call("setup", lane_type, row, lane_height, _world_half_width * 2.0, _rng)
+	lane.call("setup", lane_type, row, lane_height, _world_half_width * 2.0, _rng, _player)
 	lane.connect("player_hit", _on_lane_player_hit)
 	add_child(lane)
 	_lanes[row] = lane
@@ -77,6 +79,12 @@ func _get_lane_type(row: int) -> int:
 
 	var prev_row := row - 1
 	var prev_type: int = int(_lane_types.get(prev_row, LANE_GRASS))
+
+	# Never place two consecutive water lanes
+	if prev_type != LANE_WATER and _rng.randf() < 0.1:
+		_lane_types[row] = LANE_WATER
+		return LANE_WATER
+
 	var road_streak := 0
 	var check_row := prev_row
 	while _lane_types.has(check_row) and _lane_types[check_row] == LANE_ROAD:
@@ -101,3 +109,13 @@ func _reset_state() -> void:
 
 func _on_lane_player_hit() -> void:
 	emit_signal("player_hit")
+
+func get_camera_limits(center_row: int) -> Rect2:
+	_update_world_width()
+	var min_row := center_row - lanes_behind
+	var max_row := center_row + lanes_ahead
+	var top := -max_row * lane_height
+	var bottom := lane_height  # fixed: never scroll below start row
+	var left := -_world_half_width
+	var right := _world_half_width
+	return Rect2(Vector2(left, top), Vector2(right - left, bottom - top))
