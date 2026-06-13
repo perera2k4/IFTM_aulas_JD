@@ -4,6 +4,28 @@
 [ext_resource type="PackedScene" uid="uid://xl53wxasj6wi" path="res://scenes/LaneManager.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://hl4re3ytewyh" path="res://scenes/Frog.tscn" id="3"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud"]
+content_margin_left = 20.0
+content_margin_top = 10.0
+content_margin_right = 20.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.5)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_buff"]
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
+bg_color = Color(0, 0, 0, 0.35)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [node name="Main" type="Node2D" unique_id=943075458]
 script = ExtResource("1")
 
@@ -13,11 +35,126 @@ script = ExtResource("1")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=29847897]
 
-[node name="ScoreLabel" type="Label" parent="UI" unique_id=108034477]
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 16.0
-offset_bottom = 16.0
+[node name="HudAnchor" type="Control" parent="UI" unique_id=50413329]
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 80.0
+grow_horizontal = 2
+
+[node name="HudCenter" type="CenterContainer" parent="UI/HudAnchor" unique_id=1607907299]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 12.0
+offset_bottom = 80.0
+grow_horizontal = 2
+
+[node name="HudPanel" type="PanelContainer" parent="UI/HudAnchor/HudCenter" unique_id=557276032]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/HudAnchor/HudCenter/HudPanel" unique_id=409042178]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="ScoreLabel" type="Label" parent="UI/HudAnchor/HudCenter/HudPanel/HBoxContainer" unique_id=440677560]
+layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 18
+text = "🏆 0"
+
+[node name="BestLabel" type="Label" parent="UI/HudAnchor/HudCenter/HudPanel/HBoxContainer" unique_id=1841304593]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.84, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 18
+text = "⭐ 0"
+
+[node name="BuffPanel" type="PanelContainer" parent="UI/HudAnchor/HudCenter/HudPanel/HBoxContainer" unique_id=459827567]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_buff")
+
+[node name="BuffTimerLabel" type="Label" parent="UI/HudAnchor/HudCenter/HudPanel/HBoxContainer/BuffPanel" unique_id=628222399]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 1, 0.4, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 18
+
+[node name="LilyPanel" type="PanelContainer" parent="UI/HudAnchor/HudCenter/HudPanel/HBoxContainer" unique_id=1635893272]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_buff")
+
+[node name="LilyTimerLabel" type="Label" parent="UI/HudAnchor/HudCenter/HudPanel/HBoxContainer/LilyPanel" unique_id=2055487475]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 18
+
+[node name="GameOverOverlay" type="Control" parent="UI" unique_id=1929058007]
+process_mode = 3
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/GameOverOverlay" unique_id=1481892133]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.4)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/GameOverOverlay" unique_id=395927186]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -175.0
+offset_top = -63.0
+offset_right = 175.0
+offset_bottom = 63.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="GameOverLabel" type="Label" parent="UI/GameOverOverlay/VBoxContainer" unique_id=1436036230]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 48
+text = "GAME OVER"
+horizontal_alignment = 1
+
+[node name="RestartLabel" type="Label" parent="UI/GameOverOverlay/VBoxContainer" unique_id=506094040]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 24
+text = "[R] Reiniciar o jogo"
+horizontal_alignment = 1
+
+[node name="MenuLabel" type="Label" parent="UI/GameOverOverlay/VBoxContainer" unique_id=248741707]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 24
+text = "[ESC] Voltar ao menu inicial"
+horizontal_alignment = 1

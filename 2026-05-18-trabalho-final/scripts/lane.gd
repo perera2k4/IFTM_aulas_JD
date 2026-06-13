@@ -1,11 +1,15 @@
 extends Node2D
 
 signal player_hit
+signal coin_collected(coin_type: int)
 
 const LANE_GRASS := 0
 const LANE_ROAD := 1
 const LANE_WATER := 2
 const WATER_LILY_DURATION := 2.0
+const COIN_BUFF := 0
+const COIN_DEBUFF := 1
+const COIN_SPAWN_CHANCE := 0.10
 
 @onready var grass_sprite: Sprite2D = $GrassSprite
 @onready var road_sprite: Sprite2D = $RoadSprite
@@ -33,8 +37,8 @@ var _tile_texture_cache: Dictionary = {}
 var _grass_tile_region_cache := Rect2()
 var _road_tile_region_cache := Rect2()
 var _water_tile_region_cache := Rect2()
-
 var _vehicle_scene := preload("res://scenes/Vehicle.tscn")
+var _coin_scene := preload("res://scenes/Coin.tscn")
 var _spawn_timer := 0.0
 var _spawn_interval := Vector2(0.8, 1.6)
 var _direction := 1
@@ -42,6 +46,7 @@ var _water_lily_x := 0.0
 var _water_lily_collapsed := false
 var _death_emitted := false
 var _water_lily_bump_played := false
+var _coin_spawned := false
 
 func setup(type: int, row: int, height: float, width: float, rng: RandomNumberGenerator, player: CharacterBody2D) -> void:
 	lane_type = type
@@ -57,6 +62,7 @@ func setup(type: int, row: int, height: float, width: float, rng: RandomNumberGe
 	_water_lily_collapsed = false
 	_death_emitted = false
 	_water_lily_bump_played = false
+	_coin_spawned = false
 	if is_inside_tree():
 		_apply_lane_configuration()
 	else:
@@ -74,7 +80,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if lane_type == LANE_ROAD:
-		_spawn_timer -= delta
+		_spawn_timer -= delta * Vehicle.warmup_multiplier
 		if _spawn_timer <= 0.0:
 			_spawn_vehicle()
 			_spawn_timer = _rng.randf_range(_spawn_interval.x, _spawn_interval.y)
@@ -100,6 +106,36 @@ func _on_vehicle_player_hit() -> void:
 func _apply_lane_configuration() -> void:
 	_update_sprites()
 	_update_water_lily()
+	_try_spawn_coin()
+
+func _try_spawn_coin() -> void:
+	if lane_type != LANE_GRASS:
+		return
+	if _coin_spawned:
+		return
+	if row_index == 0:
+		return
+	_coin_spawned = true
+	
+	var roll := _rng.randf()
+	var coin_type := -1
+	if roll < COIN_SPAWN_CHANCE:
+		coin_type = COIN_BUFF
+	elif roll < COIN_SPAWN_CHANCE * 2.0:
+		coin_type = COIN_DEBUFF
+	
+	if coin_type < 0:
+		return
+	
+	var coin: Area2D = _coin_scene.instantiate()
+	coin.call("setup", coin_type)
+	var coin_x := _rng.randf_range(-lane_width * 0.35, lane_width * 0.35)
+	coin.position = Vector2(coin_x, 0)
+	coin.connect("collected", _on_coin_collected)
+	add_child(coin)
+
+func _on_coin_collected(type: int) -> void:
+	emit_signal("coin_collected", type)
 
 func _update_sprites() -> void:
 	var size := Vector2(lane_width, lane_height)
@@ -251,6 +287,17 @@ func _resolve_tile_region(override: Rect2, sprite: Sprite2D, cached: Rect2 = Rec
 	if sprite != null and sprite.region_enabled and sprite.region_rect.size.x > 0.0 and sprite.region_rect.size.y > 0.0:
 		return sprite.region_rect
 	return Rect2()
+
+func get_water_lily_time_left() -> float:
+	if lane_type != LANE_WATER:
+		return -1.0
+	if water_lily_timer == null:
+		return -1.0
+	if _water_lily_collapsed:
+		return 0.0
+	if water_lily_timer.is_stopped():
+		return -1.0
+	return water_lily_timer.time_left
 
 func _draw() -> void:
 	return

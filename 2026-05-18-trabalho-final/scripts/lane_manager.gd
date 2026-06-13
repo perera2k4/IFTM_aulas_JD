@@ -1,6 +1,7 @@
 extends Node2D
 
 signal player_hit
+signal coin_collected(coin_type: int)
 
 @export var lane_height := 64.0
 @export var cell_size := 48.0
@@ -67,6 +68,8 @@ func _create_lane(row: int) -> void:
 	var lane: Node2D = _lane_scene.instantiate()
 	lane.call("setup", lane_type, row, lane_height, _world_half_width * 2.0, _rng, _player)
 	lane.connect("player_hit", _on_lane_player_hit)
+	if lane.has_signal("coin_collected"):
+		lane.connect("coin_collected", _on_coin_collected)
 	add_child(lane)
 	_lanes[row] = lane
 
@@ -80,7 +83,6 @@ func _get_lane_type(row: int) -> int:
 	var prev_row := row - 1
 	var prev_type: int = int(_lane_types.get(prev_row, LANE_GRASS))
 
-	# Never place two consecutive water lanes
 	if prev_type != LANE_WATER and _rng.randf() < 0.1:
 		_lane_types[row] = LANE_WATER
 		return LANE_WATER
@@ -110,12 +112,25 @@ func _reset_state() -> void:
 func _on_lane_player_hit() -> void:
 	emit_signal("player_hit")
 
+func _on_coin_collected(type: int) -> void:
+	emit_signal("coin_collected", type)
+
+func get_water_lily_time_left() -> float:
+	if _player == null:
+		return -1.0
+	var row := _current_row()
+	if not _lanes.has(row):
+		return -1.0
+	if not _lanes[row].has_method("get_water_lily_time_left"):
+		return -1.0
+	return float(_lanes[row].call("get_water_lily_time_left"))
+
 func get_camera_limits(center_row: int) -> Rect2:
 	_update_world_width()
 	var min_row := center_row - lanes_behind
 	var max_row := center_row + lanes_ahead
 	var top := -max_row * lane_height
-	var bottom := lane_height  # fixed: never scroll below start row
+	var bottom := lane_height
 	var left := -_world_half_width
 	var right := _world_half_width
 	return Rect2(Vector2(left, top), Vector2(right - left, bottom - top))

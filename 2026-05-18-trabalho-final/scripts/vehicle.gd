@@ -1,3 +1,4 @@
+class_name Vehicle
 extends Area2D
 
 signal player_hit
@@ -14,6 +15,8 @@ signal player_hit
 @export var car_frame_columns := 1
 
 var _lane_width := 900.0
+static var speed_modifier := 1.0
+static var warmup_multiplier := 1.0
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
@@ -38,7 +41,7 @@ func configure(dir: int, new_speed: float, new_length: float, new_height: float,
 	queue_redraw()
 
 func _physics_process(delta: float) -> void:
-	position.x += speed * direction * delta
+	position.x += speed * direction * delta * speed_modifier * warmup_multiplier
 	if position.x < -_lane_width * 0.7 or position.x > _lane_width * 0.7:
 		queue_free()
 
